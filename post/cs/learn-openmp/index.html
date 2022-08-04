@@ -1,0 +1,135 @@
+<!doctype html><html lang=zh-cn><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><title>OpenMP学习笔记 - Styline-天空橋</title><meta name=renderer content="webkit"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1"><meta http-equiv=cache-control content="no-transform"><meta http-equiv=cache-control content="no-siteapp"><meta name=theme-color content="#f8f5ec"><meta name=msapplication-navbutton-color content="#f8f5ec"><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="#f8f5ec"><meta name=author content="Yuhang Zhou"><meta name=description content="注：此文原为notion上发布 Syntax parallel regions 1 2 3 4 5 6 7 8 9 #pragma omp parallel { // your code } #pragma omp parallel num_threads(int) // specify thread number #pragma omp master // only executed by the master thread #pragma omp single // only executed once synchronization 1 2 3 4 5 6 7 8 9"><meta name=keywords content="Hugo,theme,even"><meta name=generator content="Hugo 0.101.0 with theme even"><link rel=canonical href=https://aozora-z.github.io/post/cs/learn-openmp/><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=manifest href=/manifest.json><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link href=/sass/main.min.b5a744db6de49a86cadafb3b70f555ab443f83c307a483402259e94726b045ff.css rel=stylesheet><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin=anonymous><meta property="og:title" content="OpenMP学习笔记"><meta property="og:description" content="注：此文原为notion上发布 Syntax parallel regions 1 2 3 4 5 6 7 8 9 #pragma omp parallel { // your code } #pragma omp parallel num_threads(int) // specify thread number #pragma omp master // only executed by the master thread #pragma omp single // only executed once synchronization 1 2 3 4 5 6 7 8 9"><meta property="og:type" content="article"><meta property="og:url" content="https://aozora-z.github.io/post/cs/learn-openmp/"><meta property="article:section" content="post"><meta property="article:published_time" content="2022-07-16T00:00:00+00:00"><meta property="article:modified_time" content="2022-08-04T19:51:57+08:00"><meta itemprop=name content="OpenMP学习笔记"><meta itemprop=description content="注：此文原为notion上发布 Syntax parallel regions 1 2 3 4 5 6 7 8 9 #pragma omp parallel { // your code } #pragma omp parallel num_threads(int) // specify thread number #pragma omp master // only executed by the master thread #pragma omp single // only executed once synchronization 1 2 3 4 5 6 7 8 9"><meta itemprop=datePublished content="2022-07-16T00:00:00+00:00"><meta itemprop=dateModified content="2022-08-04T19:51:57+08:00"><meta itemprop=wordCount content="694"><meta itemprop=keywords content="CS学习,"><meta name=twitter:card content="summary"><meta name=twitter:title content="OpenMP学习笔记"><meta name=twitter:description content="注：此文原为notion上发布 Syntax parallel regions 1 2 3 4 5 6 7 8 9 #pragma omp parallel { // your code } #pragma omp parallel num_threads(int) // specify thread number #pragma omp master // only executed by the master thread #pragma omp single // only executed once synchronization 1 2 3 4 5 6 7 8 9"><!--[if lte IE 9]><script src=https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js></script><![endif]--><!--[if lt IE 9]><script src=https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js></script>
+<script src=https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js></script><![endif]--></head><body><div id=mobile-navbar class=mobile-navbar><div class=mobile-header-logo><a href=/ class=logo>Skyline</a></div><div class=mobile-navbar-icon><span></span>
+<span></span>
+<span></span></div></div><nav id=mobile-menu class="mobile-menu slideout-menu"><ul class=mobile-menu-list><a href=/><li class=mobile-menu-item>主页</li></a><a href=/post/><li class=mobile-menu-item>归档</li></a><a href=/tags/><li class=mobile-menu-item>标签</li></a><a href=/categories/><li class=mobile-menu-item>分类</li></a></ul></nav><div class=container id=mobile-panel><header id=header class=header><div class=logo-wrapper><a href=/ class=logo>Skyline</a></div><nav class=site-navbar><ul id=menu class=menu><li class=menu-item><a class=menu-item-link href=/>主页</a></li><li class=menu-item><a class=menu-item-link href=/post/>归档</a></li><li class=menu-item><a class=menu-item-link href=/tags/>标签</a></li><li class=menu-item><a class=menu-item-link href=/categories/>分类</a></li></ul></nav></header><main id=main class=main><div class=content-wrapper><div id=content class=content><article class=post><header class=post-header><h1 class=post-title>OpenMP学习笔记</h1><div class=post-meta><span class=post-time>2022-07-16</span><div class=post-category><a href=/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/>计算机</a></div><span class=more-meta>约 694 字</span>
+<span class=more-meta>预计阅读 2 分钟</span></div></header><div class=post-toc id=post-toc><h2 class=post-toc-title>文章目录</h2><div class="post-toc-content always-active"><nav id=TableOfContents><ul><li><ul><li><a href=#syntax>Syntax</a><ul><li><a href=#parallel-regions>parallel regions</a></li><li><a href=#synchronization>synchronization</a></li><li><a href=#work-sharing>work sharing</a></li><li><a href=#runtime-functions>runtime functions</a></li><li><a href=#data-sharing>data sharing</a></li></ul></li><li><a href=#programming-model--overview>Programming Model (Overview)</a><ul><li><a href=#spmd-design-pattern>SPMD design pattern</a></li><li><a href=#prevent-false-sharing>Prevent <em>false sharing</em></a></li></ul></li><li><a href=#advanced-topics>Advanced topics</a><ul><li><a href=#openmp-tasks>OpenMP Tasks</a></li><li><a href=#memory-model>Memory Model</a></li></ul></li></ul></li></ul></nav></div></div><div class=post-content><p><code>注：此文原为notion上发布</code></p><h2 id=syntax>Syntax</h2><h3 id=parallel-regions>parallel regions</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl><span class=cp>#pragma omp parallel
+</span></span></span><span class=line><span class=cl><span class=cp></span><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=c1>// your code
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=cp>#pragma omp parallel num_threads(int) </span><span class=c1>// specify thread number
+</span></span></span><span class=line><span class=cl><span class=c1></span>
+</span></span><span class=line><span class=cl><span class=cp>#pragma omp master </span><span class=c1>// only executed by the master thread
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=cp>#pragma omp single </span><span class=c1>// only executed once
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=synchronization>synchronization</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl><span class=cp>#pragma omp barrier </span><span class=c1>// synchronize threads at the enn of the block
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=cp>#pragma omp nowait </span><span class=c1>// do not need to wait after the block
+</span></span></span><span class=line><span class=cl><span class=c1></span>
+</span></span><span class=line><span class=cl><span class=cp>#pragma omp critical </span><span class=c1>// only one thread at a time
+</span></span></span><span class=line><span class=cl><span class=c1></span>
+</span></span><span class=line><span class=cl><span class=cm>/* mutual exclusion only applying
+</span></span></span><span class=line><span class=cl><span class=cm>   to the update of memory location.
+</span></span></span><span class=line><span class=cl><span class=cm>   The statement inside the atomic must
+</span></span></span><span class=line><span class=cl><span class=cm>   be one of the:
+</span></span></span><span class=line><span class=cl><span class=cm>     - x binop=expr
+</span></span></span><span class=line><span class=cl><span class=cm>     - x++, ++x
+</span></span></span><span class=line><span class=cl><span class=cm>     - x--, --x */</span>
+</span></span><span class=line><span class=cl><span class=cp>#pragma omp atomic
+</span></span></span><span class=line><span class=cl><span class=cp>#pragma omp atomic [read | write | update | capture]
+</span></span></span><span class=line><span class=cl><span class=cp></span><span class=cm>/* capture can protect the assignment of a value
+</span></span></span><span class=line><span class=cl><span class=cm>   and an associated update operation.
+</span></span></span><span class=line><span class=cl><span class=cm>   e.g. v=x++; v=++x; v=x--; v=--x; v= x binop expr; */</span>
+</span></span><span class=line><span class=cl><span class=cm>/* or structed block is one of the following forms
+</span></span></span><span class=line><span class=cl><span class=cm>   { v=x; x binop= expr; } ...... */</span>
+</span></span><span class=line><span class=cl><span class=cp>#pragma omp atomic capture
+</span></span></span><span class=line><span class=cl><span class=cp></span><span class=c1>// statement of structured block here
+</span></span></span></code></pre></td></tr></table></div></div><p><strong>lock routinues</strong></p><ul><li><code>omp_init_lock()</code></li><li><code>omp_set_lock()</code></li><li><code>omp_unset_lock()</code></li><li><code>omp_test_lock()</code></li><li><code>omp_destroy_lock()</code></li></ul><p>nested locks</p><ul><li><code>omp_init_nest_lock()</code></li><li>…</li></ul><h3 id=work-sharing>work sharing</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl><span class=cp>#pragma omp parallel
+</span></span></span><span class=line><span class=cl><span class=cp>#pragma omp for
+</span></span></span><span class=line><span class=cl><span class=cp></span><span class=k>for</span> <span class=p>(</span><span class=cm>/* write your for loop */</span><span class=p>)</span> <span class=p>{</span> <span class=cm>/* */</span> <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// put them in the same line
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=cp>#pragma omp parallel for
+</span></span></span><span class=line><span class=cl><span class=cp></span><span class=k>for</span> <span class=p>(</span><span class=cm>/* write your for loop */</span><span class=p>)</span> <span class=p>{</span> <span class=cm>/* */</span> <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// nested loops
+</span></span></span><span class=line><span class=cl><span class=c1>// nested number is count from the outside
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=cp>#pragma omp parallel for collapse(</span><span class=cm>/* nested number */</span><span class=cp>)
+</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span><span class=line><span class=cl><span class=c1>// using sections to give a different structured block
+</span></span></span><span class=line><span class=cl><span class=c1>// to each thread. By default, there is a barrier at
+</span></span></span><span class=line><span class=cl><span class=c1>// the end of the &#39;omp sections&#39;. Use &#39;nowait&#39; to
+</span></span></span><span class=line><span class=cl><span class=c1>// turn off
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=cp>#pragma omp sections
+</span></span></span><span class=line><span class=cl><span class=cp></span><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=cp>#pragma omp section
+</span></span></span><span class=line><span class=cl><span class=cp></span>    <span class=c1>// do some tasks
+</span></span></span><span class=line><span class=cl><span class=c1></span>  <span class=cp>#pragma omp section
+</span></span></span><span class=line><span class=cl><span class=cp></span>    <span class=c1>// do some tasks
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p><strong>schedule clause</strong></p><ul><li><code>schedule(static[,chunk])</code> deal-out blocks of iterations of size <em>chunk</em> to each thread</li><li><code>schedule(dynamic[,chunk])</code> each thread grabs <em>chunk</em> iterations off a queue until all iterations have been handled</li><li><code>schedule(guided[,chunk])</code> threads dynamically grab blocks. the size of block starts large and shrinks down to the size <em>chunk</em></li><li><code>schedule(runtime)</code> schedule and chunk size taken from <strong>OMP_SCHEDULE</strong> ENV variable</li><li><code>schedule(auto)</code> schedule is left up to the runtime to choose</li></ul><p><strong>when to use</strong></p><ul><li><strong>static</strong>: pre-determined</li><li><strong>dynamic</strong>: unpredictable work</li><li><strong>guided</strong>: reduce scheduling overhead for <strong>dynamic</strong> schedule</li><li><strong>auto</strong>: when the runtime can learn from previous executions of the same loop</li></ul><p><strong>Reduction</strong>: <code>reduction (op : list)</code></p><table><thead><tr><th>opt</th><th>init. v</th></tr></thead><tbody><tr><td>+</td><td>0</td></tr><tr><td>∗</td><td>1</td></tr><tr><td>-</td><td>0</td></tr><tr><td>min</td><td>largest pos. number</td></tr><tr><td>max</td><td>most neg. number</td></tr><tr><td>&</td><td>~0</td></tr><tr><td>|</td><td>0</td></tr><tr><td>xor</td><td>0</td></tr><tr><td>&&</td><td>1</td></tr><tr><td>||</td><td>0</td></tr></tbody></table><h3 id=runtime-functions>runtime functions</h3><ul><li><code>omp_set_num_threads(int)</code> create threads</li><li><code>omp_get_num_threads()</code></li><li><code>omp_get_max_threads()</code></li><li><code>omp_get_thread_num()</code> get thread id</li><li><code>omp_get_wtime()</code> get timestamp</li><li><code>omp_in_parallel()</code></li><li><code>omp_set_dynamic()</code> <code>omp_get_dynamic()</code> you want system to dynamically vary the number of threads from one parallel constrct to another</li><li><code>omp_num_procs()</code> how many processors in the system</li></ul><h3 id=data-sharing>data sharing</h3><ul><li><code>shared</code></li><li><code>private</code> creates a new local copy of var for each thread</li><li><code>firstprivate</code> variables initialized from shared variable. C++ objects are <strong>copy-constructed</strong></li><li><code>lastprivate</code> variables update shared variables using value from last iteration. C++ objects are updated as if by assignment</li></ul><p>Note: the original variable&rsquo;s value is <strong>unspecified</strong> if it is referenced outside of the construct</p><p><code>default()</code> set default data sharing strategy. C/C++ only has <code>default(shared)</code> and <code>default(none)</code></p><h2 id=programming-model--overview>Programming Model (Overview)</h2><h3 id=spmd-design-pattern>SPMD design pattern</h3><h3 id=prevent-false-sharing>Prevent <em>false sharing</em></h3><p>false sharing: If independent data elements happen to sit on the same cache line, each update will cause the cache line to &ldquo;slosh back and forth&rdquo; between threads. => <strong>Solution: Pad arrays to make elements on distinct cache lines</strong> Cacheline size: 64bytes</p><h2 id=advanced-topics>Advanced topics</h2><h3 id=openmp-tasks>OpenMP Tasks</h3><h3 id=memory-model>Memory Model</h3><p>A flush operation is implied by OpenMP synchronizations</p><ul><li>at entry/exit of parallel regions</li><li>at implicit and explicit barries</li><li>at entry/exit of critical regions</li><li>whenever a lock is set or unset</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl><span class=cp>#pragma omp flush </span><span class=c1>// force refresh to memory
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=cp>#pragma omp flush (val)
+</span></span></span></code></pre></td></tr></table></div></div></div><div class=post-copyright><p class=copyright-item><span class=item-title>文章作者</span>
+<span class=item-content>Yuhang Zhou</span></p><p class=copyright-item><span class=item-title>上次更新</span>
+<span class=item-content>2022-08-04</span></p></div><footer class=post-footer><div class=post-tags><a href=/tags/cs%E5%AD%A6%E4%B9%A0/>CS学习</a></div><nav class=post-nav><a class=prev href=/post/whisper/first-post/><i class="iconfont icon-left"></i>
+<span class="prev-text nav-default">开始使用此博客</span>
+<span class="prev-text nav-mobile">上一篇</span></a>
+<a class=next href=/post/articles/summer-220715/><span class="next-text nav-default">“我时常感到生活在大海上……”</span>
+<span class="next-text nav-mobile">下一篇</span>
+<i class="iconfont icon-right"></i></a></nav></footer></article></div><div id=gitalk-container></div><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css crossorigin=anonymous><script src=https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js crossorigin=anonymous></script>
+<script type=text/javascript>var gitalk=new Gitalk({id:"2022-07-16 00:00:00 \u002b0000 UTC",title:"OpenMP学习笔记",clientID:"2b3af5ca8b13c81c1aa8",clientSecret:"c6074406d2b3d2e95de1af95098118437cca4dff",repo:"aozora-z.github.io",owner:"aozora-z",admin:["aozora-z"],body:decodeURI(location.href)});gitalk.render("gitalk-container")</script><noscript>Please enable JavaScript to view the <a href=https://github.com/gitalk/gitalk>comments powered by gitalk.</a></noscript></div></main><footer id=footer class=footer><div class=social-links><a href=mailto:zyhvg77@gmail.com class="iconfont icon-email" title=email></a>
+<a href=https://github.com/zyhVG77 class="iconfont icon-github" title=github></a>
+<a href=https://weibo.com/u/6866835805 class="iconfont icon-weibo" title=weibo></a>
+<a href=https://space.bilibili.com/11643572 class="iconfont icon-bilibili" title=bilibili></a>
+<a href=https://aozora-z.github.io/index.xml type=application/rss+xml class="iconfont icon-rss" title=rss></a></div><div class=copyright><span class=power-by>由 <a class=hexo-link href=https://gohugo.io>Hugo</a> 强力驱动</span>
+<span class=division>|</span>
+<span class=theme-info>主题 -
+<a class=theme-link href=https://github.com/olOwOlo/hugo-theme-even>Even</a></span>
+<span class=copyright-year>&copy;
+2022<span class=heart><i class="iconfont icon-heart"></i></span><span>Yuhang Zhou</span></span></div></footer><div class=back-to-top id=back-to-top><i class="iconfont icon-up"></i></div></div><script src=https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin=anonymous></script>
+<script src=https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin=anonymous></script>
+<script src=https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin=anonymous></script>
+<script type=text/javascript src=/js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js></script></body></html>
